@@ -44,6 +44,7 @@ dependencies:
   flutter_riverpod: ^2.4.10
   riverpod_annotation: ^2.3.4
   go_router: ^13.2.0
+  osm_nominatim: ^3.0.0
 
 dev_dependencies:
   flutter_test:
