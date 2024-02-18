@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'map.dart';
+part of 'home.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapControllerHash() => r'6a1ad5140cee4ce62f0bf3dcdb7bcc0b1040bbef';
+String _$mapControllerHash() => r'44b58685f9922d33731780e3e9210eebeecc66ca';
 
 /// See also [mapController].
 @ProviderFor(mapController)
