@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'map.dart';
 import 'subpages/search.dart';
-import 'search_layers/search_layers.dart';
-
-part 'home.g.dart';
-
-@Riverpod(keepAlive: true)
-MapController mapController(Ref ref) => MapController();
 
 enum SubLocation {
   none,
@@ -18,22 +10,20 @@ enum SubLocation {
   search,
 }
 
-class TheMap extends ConsumerStatefulWidget {
-  const TheMap({
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState<TheMap> createState() => _TheMapState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _TheMapState extends ConsumerState<TheMap> {
+class _HomePageState extends ConsumerState<HomePage> {
   SubLocation subLocation = SubLocation.none;
 
   @override
   Widget build(BuildContext context) {
-    final results = ref.watch(searchResultsProvider).valueOrNull;
-
     final padding = MediaQuery.of(context).padding;
 
     final wide = MediaQuery.sizeOf(context).width > 1000;
@@ -63,28 +53,7 @@ class _TheMapState extends ConsumerState<TheMap> {
             ),
             VerticalDivider(width: 1, thickness: 1),
           ],
-          Expanded(
-            child: FlutterMap(
-              mapController: ref.watch(mapControllerProvider),
-              options: const MapOptions(
-                initialCenter: LatLng(35.699680629055365, 139.77137788132293),
-                initialZoom: 18,
-                maxZoom: 18,
-                interactionOptions: InteractionOptions(
-                  flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-                ),
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  maxZoom: 18,
-                  maxNativeZoom: 18,
-                  // retinaMode: RetinaMode.isHighDensity(context),
-                ),
-                (results ?? NoSearchResults()).mapLayer(context),
-              ],
-            ),
-          ),
+          const Expanded(child: MapView()),
         ],
       ),
       bottomSheet: subview != null && !wide ? subview : null,
