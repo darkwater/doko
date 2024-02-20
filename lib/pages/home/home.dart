@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'subpages/search.dart';
-import 'search.dart';
+import 'search_layers/search_layers.dart';
 
 part 'home.g.dart';
 
@@ -32,7 +32,7 @@ class _TheMapState extends ConsumerState<TheMap> {
 
   @override
   Widget build(BuildContext context) {
-    final results = ref.watch(searchResultsProvider).valueOrNull ?? [];
+    final results = ref.watch(searchResultsProvider).valueOrNull;
 
     final padding = MediaQuery.of(context).padding;
 
@@ -81,22 +81,7 @@ class _TheMapState extends ConsumerState<TheMap> {
                   maxNativeZoom: 18,
                   // retinaMode: RetinaMode.isHighDensity(context),
                 ),
-                MarkerLayer(
-                  alignment: Alignment.topCenter,
-                  markers: [
-                    for (final place in results)
-                      Marker(
-                        point: LatLng(place.lat, place.lon),
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Icons.place,
-                          color: Colors.redAccent,
-                          size: 40,
-                        ),
-                      ),
-                  ],
-                ),
+                (results ?? NoSearchResults()).mapLayer(context),
               ],
             ),
           ),

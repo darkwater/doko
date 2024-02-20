@@ -1,8 +1,9 @@
+import "package:doko/pages/home/search_layers/find.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "../search.dart";
+import "../search_layers/search_layers.dart";
 
 enum SearchMode {
   go,
@@ -45,11 +46,10 @@ class SearchSheet extends HookConsumerWidget {
                   child: TextField(
                     controller: searchController,
                     onSubmitted: (value) {
-                      ref.read(searchQueryProvider.notifier).state =
-                          SearchQuery(
-                        query: value,
-                        go: ref.read(searchModeProvider) == SearchMode.go,
-                      );
+                      if (ref.watch(searchModeProvider) == SearchMode.find) {
+                        ref.read(searchQueryProvider.notifier).state =
+                            FindSearchQuery(value);
+                      }
                     },
                     decoration: InputDecoration(
                       hintText: "Search",
