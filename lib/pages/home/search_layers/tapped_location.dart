@@ -1,9 +1,10 @@
+import 'package:doko/api/nominatim/models.dart';
+import 'package:doko/api/nominatim/nominatim.dart';
 import 'package:doko/pages/home/search_layers/search_layers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:osm_nominatim/osm_nominatim.dart';
 
 import '../map.dart';
 
@@ -17,11 +18,8 @@ class TappedLocationSearchQuery extends SearchQuery {
 
   @override
   Future<SearchResults> resolve(Ref ref) async {
-    print(ref.read(mapControllerProvider).camera.zoom.round());
-
-    final res = await Nominatim.reverseSearch(
-      lat: location.latitude,
-      lon: location.longitude,
+    final res = await Nominatim().reverseSearch(
+      location: location,
       zoom: ref.read(mapControllerProvider).camera.zoom.round(),
       nameDetails: true,
       extraTags: true,
@@ -40,7 +38,7 @@ class TappedLocationSearchResults extends SearchResults {
   @override
   Widget mapLayer(BuildContext context) {
     print(result.category);
-    print(result.nameDetails);
+    print(result.namedetails);
     print(result.displayName);
 
     return MarkerLayer(

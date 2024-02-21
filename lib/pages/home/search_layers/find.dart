@@ -1,9 +1,9 @@
+import 'package:doko/api/nominatim/models.dart';
+import 'package:doko/api/nominatim/nominatim.dart';
 import 'package:doko/pages/home/search_layers/search_layers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:osm_nominatim/osm_nominatim.dart';
 
 import '../map.dart';
 
@@ -15,14 +15,14 @@ class FindSearchQuery extends SearchQuery {
 
   @override
   Future<SearchResults> resolve(Ref ref) async {
-    final bounds = ref.watch(mapControllerProvider).camera.visibleBounds;
-
     print("searching $query");
 
-    final results = await Nominatim.searchByName(
+    final results = await Nominatim().searchByName(
       query: query,
-      viewBox: ViewBox(bounds.north, bounds.south, bounds.east, bounds.west),
+      viewbox: ref.watch(mapControllerProvider).camera.visibleBounds,
     );
+
+    print("found ${results.length} results");
 
     return FindSearchResults(results);
   }
@@ -40,7 +40,7 @@ class FindSearchResults extends SearchResults {
       markers: [
         for (final place in results)
           Marker(
-            point: LatLng(place.lat, place.lon),
+            point: place.latLng,
             width: 40,
             height: 40,
             child: Icon(

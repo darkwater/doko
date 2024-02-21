@@ -19,7 +19,12 @@ Future<SearchResults> searchResults(Ref ref) async {
     return NoSearchResults();
   }
 
-  return await query.resolve(ref);
+  try {
+    return await query.resolve(ref);
+  } catch (e) {
+    print(e);
+    return NoSearchResults();
+  }
 }
 
 @immutable

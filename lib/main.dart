@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:doko/router.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final dio = Dio();
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
